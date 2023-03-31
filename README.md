@@ -1,13 +1,43 @@
-# Sample Hardhat Project
+# zkSNARK CIRCOM Example
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This is zkSNARK circuit and verifier contract example.
 
-Try running some of the following tasks:
+## zk circuit
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+`./zk/circuit.circom`
+
+```circom
+template Multiplier() {
+    signal private input a;
+    signal private input b;
+    signal output c;
+
+    c <== a * b;
+}
+
+component main = Multiplier();
+
+```
+
+## getting started
+
+1. setup
+
+```bash
+$ git clone ...
+$ cd zk-snarks-circom-example
+$ npm i
+```
+
+2. create zk verification
+
+```bash
+$ npm run zk
+$ npm run verifier
+```
+
+3. test contract
+
+```bash
+$ npm run test
 ```
