@@ -25,4 +25,3 @@ echo '{ "a": 3, "b": 11 }' > zk/input.json
 npx snarkjs wtns calculate zk/build/circuit.wasm zk/input.json zk/witness.wtns
 npx snarkjs groth16 prove zk/ptau/circuit_final.zkey zk/witness.wtns zk/proof.json zk/public.json
 npx snarkjs groth16 verify zk/ptau/verification_key.json zk/public.json zk/proof.json
-

@@ -10,7 +10,11 @@ zk/build/circuit.*
 *.zkey
 verification_key.json
 
-#zk proof files
+# zk proof files
 proof.json
 public.json
 witness.wtns
+
+# hardhat
+artifacts
+cache

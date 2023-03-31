@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx hardhat compile",
+    "type": "npx hardhat typechain",
+    "test": "npx hardhat test",
     "zk": "npx circom zk/circuit.circom --r1cs zk/build/circuit.r1cs --wasm zk/build/circuit.wasm --sym zk/build/circuit.sym",
     "proof": "sh zk.sh",
     "verifier": "npx snarkjs generateverifier"
@@ -16,5 +18,12 @@
     "circom": "^0.5.46",
     "circomlib": "^2.0.5",
     "snarkjs": "^0.6.10"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
+    "@typechain/ethers-v5": "^10.2.0",
+    "@typechain/hardhat": "^6.1.5",
+    "hardhat": "^2.13.0",
+    "hardhat-circom": "^3.3.2"
   }
 }
