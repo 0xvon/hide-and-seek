@@ -24,7 +24,7 @@ component main = Multiplier();
 1. setup
 
 ```bash
-$ git clone ...
+$ git clone git@github.com:0xvon/zk-snarks-circom-example.git
 $ cd zk-snarks-circom-example
 $ npm i
 ```
