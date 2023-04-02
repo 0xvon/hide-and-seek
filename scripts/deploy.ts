@@ -6,8 +6,13 @@ async function main() {
 
   await verifier.deployed();
 
+  const HideAndSeek = await ethers.getContractFactory("HideAndSeek");
+  const hideAndSeek = await HideAndSeek.deploy(verifier.address);
+
+  await hideAndSeek.deployed();
+
   console.log(
-    `Verifier deployed to ${verifier.address}`
+    `Verifier: ${verifier.address}\nHideAndSeek: ${hideAndSeek.address}`
   );
 }
 
