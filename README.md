@@ -1,6 +1,6 @@
-# zkSNARK CIRCOM Example
+# zkSNARK Hide And Seek
 
-This is zkSNARK circuit and verifier contract example.
+This is zkSNARK circuit and verifier contract.
 
 ## zk circuit
 
@@ -24,8 +24,8 @@ component main = Multiplier();
 1. setup
 
 ```bash
-$ git clone git@github.com:0xvon/zk-snarks-circom-example.git
-$ cd zk-snarks-circom-example
+$ git clone git@github.com:0xvon/hide-and-seek.git
+$ cd hide-and-seek
 $ npm i
 ```
 
