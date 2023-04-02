@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@rainbow-me/rainbowkit": "^0.12.5",
     "ethers": "^5.5.2",
     "framer-motion": "^10.10.0",
     "next": "13.2.4",
@@ -20,7 +21,7 @@
     "react-dom": "18.2.0",
     "typechain": "^4.0.3",
     "typechain-target-ethers-v5": "^5.0.1",
-    "web3modal": "^1.9.12"
+    "wagmi": "^0.12.8"
   },
   "devDependencies": {
     "@types/react": "18.0.31",
