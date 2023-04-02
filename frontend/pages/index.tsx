@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Game } from "../components/Game";
 import { HideAndSeek__factory } from "../types/abis";
-const CONTRACT_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"; // HideAndSeekコントラクトのアドレスを設定してください
 import { useAppProvider } from "../context/AppContext";
 import { Board } from "../components/Board";
 import { Box, Flex } from "@chakra-ui/react";
 import { Head } from "../components/Head";
 import { useAccount, useSigner, useProvider } from "wagmi";
+
+const CONTRACT_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
 type Coordinate = [number, number];
 
 const numberToCoordinate = (num: number): Coordinate => {
