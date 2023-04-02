@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { HideAndSeek, Verifier } from "../types";
-import { hiderMove } from "./UpdateProof";
+import { generateZkp } from "../lib/updateProof";
 
 describe("HideAndSeek", () => {
   let hideAndSeek: HideAndSeek;
@@ -45,9 +45,10 @@ describe("HideAndSeek", () => {
     expect(await hideAndSeek.seeker()).to.equal(seeker.address);
 
     // Hider moves
-    const newProof = await hiderMove(hideAndSeek, hider, 0, 0);
+    const { proof, } = await generateZkp(0, 0);
+    await hideAndSeek.connect(hider).updateProof(proof);
     const currentProof = await hideAndSeek.currentProof();
-    expect(currentProof.pi_a.X.toString()).to.equal(newProof.pi_a[0].toString());
+    expect(currentProof.pi_a.X.toString()).to.equal(proof.pi_a[0].toString());
 
     // Seeker moves
     await expect(hideAndSeek.connect(seeker).seekerMove(2, 0))
