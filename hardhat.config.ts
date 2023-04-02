@@ -2,6 +2,8 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@typechain/hardhat";
 import "hardhat-circom";
+import "snarkjs";
+import "circom";
 
 const config: HardhatUserConfig = {
   solidity: {

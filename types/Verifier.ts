@@ -23,7 +23,7 @@ import type {
 
 export interface VerifierInterface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[1])": FunctionFragment;
+    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])": FunctionFragment;
   };
 
   getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;
@@ -37,7 +37,11 @@ export interface VerifierInterface extends utils.Interface {
         [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
       ],
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [PromiseOrValue<BigNumberish>]
+      [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ]
     ]
   ): string;
 
@@ -83,7 +87,11 @@ export interface Verifier extends BaseContract {
         [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
       ],
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [PromiseOrValue<BigNumberish>],
+      input: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
       overrides?: CallOverrides
     ): Promise<[boolean] & { r: boolean }>;
   };
@@ -95,7 +103,11 @@ export interface Verifier extends BaseContract {
       [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
     ],
     c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-    input: [PromiseOrValue<BigNumberish>],
+    input: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ],
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -107,7 +119,11 @@ export interface Verifier extends BaseContract {
         [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
       ],
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [PromiseOrValue<BigNumberish>],
+      input: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -122,7 +138,11 @@ export interface Verifier extends BaseContract {
         [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
       ],
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [PromiseOrValue<BigNumberish>],
+      input: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -135,7 +155,11 @@ export interface Verifier extends BaseContract {
         [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
       ],
       c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [PromiseOrValue<BigNumberish>],
+      input: [
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>,
+        PromiseOrValue<BigNumberish>
+      ],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
