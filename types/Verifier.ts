@@ -21,28 +21,56 @@ import type {
   PromiseOrValue,
 } from "./common";
 
+export declare namespace Pairing {
+  export type G1PointStruct = {
+    X: PromiseOrValue<BigNumberish>;
+    Y: PromiseOrValue<BigNumberish>;
+  };
+
+  export type G1PointStructOutput = [BigNumber, BigNumber] & {
+    X: BigNumber;
+    Y: BigNumber;
+  };
+
+  export type G2PointStruct = {
+    X: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>];
+    Y: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>];
+  };
+
+  export type G2PointStructOutput = [
+    [BigNumber, BigNumber],
+    [BigNumber, BigNumber]
+  ] & { X: [BigNumber, BigNumber]; Y: [BigNumber, BigNumber] };
+}
+
+export declare namespace Verifier {
+  export type ProofStruct = {
+    pi_a: Pairing.G1PointStruct;
+    pi_b: Pairing.G2PointStruct;
+    pi_c: Pairing.G1PointStruct;
+  };
+
+  export type ProofStructOutput = [
+    Pairing.G1PointStructOutput,
+    Pairing.G2PointStructOutput,
+    Pairing.G1PointStructOutput
+  ] & {
+    pi_a: Pairing.G1PointStructOutput;
+    pi_b: Pairing.G2PointStructOutput;
+    pi_c: Pairing.G1PointStructOutput;
+  };
+}
+
 export interface VerifierInterface extends utils.Interface {
   functions: {
-    "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])": FunctionFragment;
+    "verifyProof(((uint256,uint256),(uint256[2],uint256[2]),(uint256,uint256)),uint256[])": FunctionFragment;
   };
 
   getFunction(nameOrSignatureOrTopic: "verifyProof"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "verifyProof",
-    values: [
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-      ],
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>
-      ]
-    ]
+    values: [Verifier.ProofStruct, PromiseOrValue<BigNumberish>[]]
   ): string;
 
   decodeFunctionResult(
@@ -81,49 +109,22 @@ export interface Verifier extends BaseContract {
 
   functions: {
     verifyProof(
-      a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      b: [
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-      ],
-      c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>
-      ],
+      _proof: Verifier.ProofStruct,
+      input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<[boolean] & { r: boolean }>;
   };
 
   verifyProof(
-    a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-    b: [
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-    ],
-    c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-    input: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ],
+    _proof: Verifier.ProofStruct,
+    input: PromiseOrValue<BigNumberish>[],
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
     verifyProof(
-      a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      b: [
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-      ],
-      c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>
-      ],
+      _proof: Verifier.ProofStruct,
+      input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<boolean>;
   };
@@ -132,34 +133,16 @@ export interface Verifier extends BaseContract {
 
   estimateGas: {
     verifyProof(
-      a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      b: [
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-      ],
-      c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>
-      ],
+      _proof: Verifier.ProofStruct,
+      input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     verifyProof(
-      a: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      b: [
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-        [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-      ],
-      c: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
-      input: [
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>,
-        PromiseOrValue<BigNumberish>
-      ],
+      _proof: Verifier.ProofStruct,
+      input: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

@@ -1,16 +1,16 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.18;
 
-import "./Verifier.sol"; // zk-SNARKs Verifier Contract
+import "./Verifier.sol";
 
 contract HideAndSeek {
     Verifier public verifier;
 
     address public hider;
     address public seeker;
-    bytes public currentProof;
+    Verifier.Proof public currentProof;
 
-    event UpdatedProof(address indexed hider, bytes proof);
+    event UpdatedProof(address indexed hider, Verifier.Proof proof);
     event SeekerMoved(address indexed seeker, uint256 seekerX, uint256 seekerY);
     event Found(address indexed seeker);
 
@@ -25,10 +25,9 @@ contract HideAndSeek {
             require(seeker == address(0), "Seeker has already joined");
             seeker = msg.sender;
         }
-        
     }
 
-    function updateProof(bytes calldata _proof) external {
+    function updateProof(Verifier.Proof memory _proof) external {
         require(msg.sender == hider, "Only the hider can update the proof");
         currentProof = _proof;
         emit UpdatedProof(hider, _proof);
@@ -38,8 +37,10 @@ contract HideAndSeek {
         require(msg.sender == seeker, "Only the seeker can move");
         require(hider != address(0), "There is no hider now");
 
-        (bool success, ) = address(verifier).call(abi.encodeWithSignature("verifyProof(bytes,uint256,uint256)", currentProof, seekerX, seekerY));
-        require(success, "Failed to verify the proof");
+        uint[] memory input = new uint[](3);
+        input[0] = seekerX;
+        input[1] = seekerY;
+        (bool success) = verifier.verifyProof(currentProof, input);
 
         if (success) {
             hider = msg.sender;

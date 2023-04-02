@@ -27,6 +27,46 @@ import type {
   PromiseOrValue,
 } from "./common";
 
+export declare namespace Pairing {
+  export type G1PointStruct = {
+    X: PromiseOrValue<BigNumberish>;
+    Y: PromiseOrValue<BigNumberish>;
+  };
+
+  export type G1PointStructOutput = [BigNumber, BigNumber] & {
+    X: BigNumber;
+    Y: BigNumber;
+  };
+
+  export type G2PointStruct = {
+    X: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>];
+    Y: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>];
+  };
+
+  export type G2PointStructOutput = [
+    [BigNumber, BigNumber],
+    [BigNumber, BigNumber]
+  ] & { X: [BigNumber, BigNumber]; Y: [BigNumber, BigNumber] };
+}
+
+export declare namespace Verifier {
+  export type ProofStruct = {
+    pi_a: Pairing.G1PointStruct;
+    pi_b: Pairing.G2PointStruct;
+    pi_c: Pairing.G1PointStruct;
+  };
+
+  export type ProofStructOutput = [
+    Pairing.G1PointStructOutput,
+    Pairing.G2PointStructOutput,
+    Pairing.G1PointStructOutput
+  ] & {
+    pi_a: Pairing.G1PointStructOutput;
+    pi_b: Pairing.G2PointStructOutput;
+    pi_c: Pairing.G1PointStructOutput;
+  };
+}
+
 export interface HideAndSeekInterface extends utils.Interface {
   functions: {
     "currentProof()": FunctionFragment;
@@ -34,7 +74,7 @@ export interface HideAndSeekInterface extends utils.Interface {
     "joinGame()": FunctionFragment;
     "seeker()": FunctionFragment;
     "seekerMove(uint256,uint256)": FunctionFragment;
-    "updateProof(bytes)": FunctionFragment;
+    "updateProof(((uint256,uint256),(uint256[2],uint256[2]),(uint256,uint256)))": FunctionFragment;
     "verifier()": FunctionFragment;
   };
 
@@ -62,7 +102,7 @@ export interface HideAndSeekInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateProof",
-    values: [PromiseOrValue<BytesLike>]
+    values: [Verifier.ProofStruct]
   ): string;
   encodeFunctionData(functionFragment: "verifier", values?: undefined): string;
 
@@ -83,7 +123,7 @@ export interface HideAndSeekInterface extends utils.Interface {
   events: {
     "Found(address)": EventFragment;
     "SeekerMoved(address,uint256,uint256)": EventFragment;
-    "UpdatedProof(address,bytes)": EventFragment;
+    "UpdatedProof(address,tuple)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Found"): EventFragment;
@@ -112,10 +152,10 @@ export type SeekerMovedEventFilter = TypedEventFilter<SeekerMovedEvent>;
 
 export interface UpdatedProofEventObject {
   hider: string;
-  proof: string;
+  proof: Verifier.ProofStructOutput;
 }
 export type UpdatedProofEvent = TypedEvent<
-  [string, string],
+  [string, Verifier.ProofStructOutput],
   UpdatedProofEventObject
 >;
 
@@ -148,7 +188,19 @@ export interface HideAndSeek extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    currentProof(overrides?: CallOverrides): Promise<[string]>;
+    currentProof(
+      overrides?: CallOverrides
+    ): Promise<
+      [
+        Pairing.G1PointStructOutput,
+        Pairing.G2PointStructOutput,
+        Pairing.G1PointStructOutput
+      ] & {
+        pi_a: Pairing.G1PointStructOutput;
+        pi_b: Pairing.G2PointStructOutput;
+        pi_c: Pairing.G1PointStructOutput;
+      }
+    >;
 
     hider(overrides?: CallOverrides): Promise<[string]>;
 
@@ -165,14 +217,26 @@ export interface HideAndSeek extends BaseContract {
     ): Promise<ContractTransaction>;
 
     updateProof(
-      _proof: PromiseOrValue<BytesLike>,
+      _proof: Verifier.ProofStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     verifier(overrides?: CallOverrides): Promise<[string]>;
   };
 
-  currentProof(overrides?: CallOverrides): Promise<string>;
+  currentProof(
+    overrides?: CallOverrides
+  ): Promise<
+    [
+      Pairing.G1PointStructOutput,
+      Pairing.G2PointStructOutput,
+      Pairing.G1PointStructOutput
+    ] & {
+      pi_a: Pairing.G1PointStructOutput;
+      pi_b: Pairing.G2PointStructOutput;
+      pi_c: Pairing.G1PointStructOutput;
+    }
+  >;
 
   hider(overrides?: CallOverrides): Promise<string>;
 
@@ -189,14 +253,26 @@ export interface HideAndSeek extends BaseContract {
   ): Promise<ContractTransaction>;
 
   updateProof(
-    _proof: PromiseOrValue<BytesLike>,
+    _proof: Verifier.ProofStruct,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   verifier(overrides?: CallOverrides): Promise<string>;
 
   callStatic: {
-    currentProof(overrides?: CallOverrides): Promise<string>;
+    currentProof(
+      overrides?: CallOverrides
+    ): Promise<
+      [
+        Pairing.G1PointStructOutput,
+        Pairing.G2PointStructOutput,
+        Pairing.G1PointStructOutput
+      ] & {
+        pi_a: Pairing.G1PointStructOutput;
+        pi_b: Pairing.G2PointStructOutput;
+        pi_c: Pairing.G1PointStructOutput;
+      }
+    >;
 
     hider(overrides?: CallOverrides): Promise<string>;
 
@@ -211,7 +287,7 @@ export interface HideAndSeek extends BaseContract {
     ): Promise<void>;
 
     updateProof(
-      _proof: PromiseOrValue<BytesLike>,
+      _proof: Verifier.ProofStruct,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -233,7 +309,7 @@ export interface HideAndSeek extends BaseContract {
       seekerY?: null
     ): SeekerMovedEventFilter;
 
-    "UpdatedProof(address,bytes)"(
+    "UpdatedProof(address,tuple)"(
       hider?: PromiseOrValue<string> | null,
       proof?: null
     ): UpdatedProofEventFilter;
@@ -261,7 +337,7 @@ export interface HideAndSeek extends BaseContract {
     ): Promise<BigNumber>;
 
     updateProof(
-      _proof: PromiseOrValue<BytesLike>,
+      _proof: Verifier.ProofStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -286,7 +362,7 @@ export interface HideAndSeek extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     updateProof(
-      _proof: PromiseOrValue<BytesLike>,
+      _proof: Verifier.ProofStruct,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

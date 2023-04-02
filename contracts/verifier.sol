@@ -171,9 +171,9 @@ contract Verifier {
         Pairing.G1Point[] IC;
     }
     struct Proof {
-        Pairing.G1Point A;
-        Pairing.G2Point B;
-        Pairing.G1Point C;
+        Pairing.G1Point pi_a;
+        Pairing.G2Point pi_b;
+        Pairing.G1Point pi_c;
     }
     function verifyingKey() internal pure returns (VerifyingKey memory vk) {
         vk.alfa1 = Pairing.G1Point(
@@ -234,24 +234,22 @@ contract Verifier {
         }
         vk_x = Pairing.addition(vk_x, vk.IC[0]);
         if (!Pairing.pairingProd4(
-            Pairing.negate(proof.A), proof.B,
+            Pairing.negate(proof.pi_a), proof.pi_b,
             vk.alfa1, vk.beta2,
             vk_x, vk.gamma2,
-            proof.C, vk.delta2
+            proof.pi_c, vk.delta2
         )) return 1;
         return 0;
     }
     /// @return r  bool true if proof is valid
     function verifyProof(
-            uint[2] memory a,
-            uint[2][2] memory b,
-            uint[2] memory c,
-            uint[3] memory input
+            Proof memory _proof,
+            uint[] memory input
         ) public view returns (bool r) {
         Proof memory proof;
-        proof.A = Pairing.G1Point(a[0], a[1]);
-        proof.B = Pairing.G2Point([b[0][0], b[0][1]], [b[1][0], b[1][1]]);
-        proof.C = Pairing.G1Point(c[0], c[1]);
+        proof.pi_a = Pairing.G1Point(_proof.pi_a.X, _proof.pi_a.Y);
+        proof.pi_b = Pairing.G2Point([_proof.pi_b.X[1], _proof.pi_b.X[0]], [_proof.pi_b.Y[1], _proof.pi_b.Y[0]]);
+        proof.pi_c = Pairing.G1Point(_proof.pi_c.X, _proof.pi_c.Y);
         uint[] memory inputValues = new uint[](input.length);
         for(uint i = 0; i < input.length; i++){
             inputValues[i] = input[i];

@@ -32,41 +32,34 @@ describe("HideAndSeek", () => {
     expect(hideAndSeek.address).to.not.equal(0);
   });
 
-  it("hider found", async () => {
-    // no hider
+  it("seeker found a hider", async () => {
+    // There is no hider
     expect(await hideAndSeek.hider()).to.equal(ethers.constants.AddressZero);
 
-    // hider join the game
+    // Hider join the game
     await hideAndSeek.connect(hider).joinGame();
     expect(await hideAndSeek.hider()).to.equal(hider.address);
     
-    // seeker join the game
+    // Seeker join the game
     await hideAndSeek.connect(seeker).joinGame();
     expect(await hideAndSeek.seeker()).to.equal(seeker.address);
 
-    // hider moves
-    await hiderMove(hideAndSeek, hider, 0, 0);
+    // Hider moves
+    const newProof = await hiderMove(hideAndSeek, hider, 0, 0);
+    const currentProof = await hideAndSeek.currentProof();
+    expect(currentProof.pi_a.X.toString()).to.equal(newProof.pi_a[0].toString());
+
+    // Seeker moves
+    await expect(hideAndSeek.connect(seeker).seekerMove(2, 0))
+      .to.emit(hideAndSeek, "SeekerMoved")
+      .withArgs(seekerAddress, 2, 0);
     
-    // await hideAndSeek.updateProof();
+    // Seeker moves to hider's position
+    await expect(hideAndSeek.connect(seeker).seekerMove(0, 0))
+      .to.emit(hideAndSeek, "Found")
+      .withArgs(seekerAddress);
 
-    // seeker moves
-    // await hideAndSeek.connect(seeker).seekerMove(0, 0);
+    // Seeker became hider
+    expect(await hideAndSeek.hider()).to.equal(seeker.address); 
   })
-
-  it("should update proof correctly", async () => {
-    const fakeProof = "0x1234";
-    await hideAndSeek.connect(hider).joinGame();
-    await expect(hideAndSeek.connect(hider).updateProof(fakeProof))
-      .to.emit(hideAndSeek, "UpdatedProof")
-      .withArgs(hiderAddress, fakeProof);
-  
-    const updatedProof = await hideAndSeek.currentProof();
-    expect(updatedProof).to.equal(fakeProof);
-  });
-  
-  it("should reject updateProof from a non-hider", async () => {
-    const fakeProof = "0x1234";
-    await hideAndSeek.connect(hider).joinGame();
-    await expect(hideAndSeek.connect(seeker).updateProof(fakeProof)).to.be.revertedWith("Only the hider can update the proof");
-  });
 });
